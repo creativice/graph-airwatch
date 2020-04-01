@@ -38,3 +38,26 @@ export function createOrganizationGroupRelationships(
 
   return relationships;
 }
+
+export function createOrganizationGroupGroupRelationships(
+  organizationGroups: OrganizationGroupEntity[],
+  type: string,
+): RelationshipFromIntegration[] {
+  const relationships = [];
+
+  for (const organizationGroup of organizationGroups) {
+    for (const childGroupId of organizationGroup.children) {
+      const entity = organizationGroups.find(
+        group => group.groupId === childGroupId,
+      );
+
+      if (entity) {
+        relationships.push(
+          createOrganizationGroupRelationship(organizationGroup, entity, type),
+        );
+      }
+    }
+  }
+
+  return relationships;
+}

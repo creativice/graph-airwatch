@@ -112,7 +112,52 @@ export default class AirwatchClient {
       [],
     );
 
-    return organizationGroups;
+    const groupChildren: {
+      groupId: number;
+      children: number[];
+    }[] = await Promise.all(
+      organizationGroups.map(group =>
+        this.fetchOrganizationGroupChildren(group.Id),
+      ),
+    );
+
+    const getGroupChildren = (groupId: number) => {
+      const result = groupChildren.find(gc => gc.groupId === groupId);
+
+      return result ? result.children : [];
+    };
+
+    return organizationGroups.map(group => ({
+      ...group,
+      Children: getGroupChildren(group.Id),
+    }));
+  }
+
+  private async fetchOrganizationGroupChildren(
+    groupId: number,
+  ): Promise<{
+    groupId: number;
+    children: number[];
+  }> {
+    try {
+      const response: any = await this.makeRequest(
+        `/system/groups/${groupId}/children`,
+        HttpMethod.GET,
+        {},
+      );
+
+      return {
+        groupId,
+        children: response
+          .filter((g: any) => g.Id.Value !== groupId)
+          .map((g: any) => g.Id.Value),
+      };
+    } catch (err) {
+      return {
+        groupId,
+        children: [],
+      };
+    }
   }
 
   private async makeRequest<T>(

@@ -9,6 +9,7 @@ export { createOrganizationGroupEntities } from "./entities/OrganizationGroupEnt
 export {
   createOrganizationGroupRelationship,
   createOrganizationGroupRelationships,
+  createOrganizationGroupGroupRelationships,
 } from "./relationships/OrganizationGroupRelationship";
 export {
   createAccountRelationship,

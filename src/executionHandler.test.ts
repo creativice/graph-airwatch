@@ -10,7 +10,10 @@ import { DEVICE_USER_ENTITY_TYPE } from "./jupiterone/entities/UserEntity";
 
 import { ACCOUNT_ORGANIZATION_GROUP_RELATIONSHIP_TYPE } from "./jupiterone/relationships/AccountOrganizationGroupRelationship";
 import { ACCOUNT_DEVICE_RELATIONSHIP_TYPE } from "./jupiterone/relationships/AccountDeviceRelationship";
-import { ORGANIZATION_GROUP_ADMIN_RELATIONSHIP_TYPE } from "./jupiterone/relationships/OrganizationGroupAdminRelationship";
+import {
+  ORGANIZATION_GROUP_ADMIN_RELATIONSHIP_TYPE,
+  ORGANIZATION_GROUP_GROUP_RELATIONSHIP_TYPE,
+} from "./jupiterone/relationships/OrganizationGroupAdminRelationship";
 import { USER_DEVICE_RELATIONSHIP_TYPE } from "./jupiterone/relationships/UserDeviceRelationship";
 
 jest.mock("./initializeContext");
@@ -66,6 +69,7 @@ test("executionHandler", async () => {
   ]);
   expect(executionContext.graph.findRelationshipsByType).toHaveBeenCalledWith([
     ORGANIZATION_GROUP_ADMIN_RELATIONSHIP_TYPE,
+    ORGANIZATION_GROUP_GROUP_RELATIONSHIP_TYPE,
   ]);
   expect(executionContext.graph.findRelationshipsByType).toHaveBeenCalledWith([
     USER_DEVICE_RELATIONSHIP_TYPE,

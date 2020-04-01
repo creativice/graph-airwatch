@@ -12,4 +12,5 @@ export interface OrganizationGroupEntity extends EntityFromIntegration {
   displayName: string;
   webLink: string;
   createdOn: string;
+  children: number[];
 }

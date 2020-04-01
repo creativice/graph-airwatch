@@ -23,5 +23,6 @@ export function createOrganizationGroupEntities(
     displayName: item.Name,
     webLink: `https://${host}/AirWatch/#/AirWatch/OrganizationGroup/Details/Index/${item.Id}`,
     createdOn: parseDatetime(item.CreatedOn),
+    children: item.Children,
   }));
 }
