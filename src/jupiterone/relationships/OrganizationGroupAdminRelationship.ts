@@ -1,2 +1,6 @@
 export const ORGANIZATION_GROUP_ADMIN_RELATIONSHIP_TYPE = "airwatch_group_user";
 export const ORGANIZATION_GROUP_ADMIN_RELATIONSHIP_CLASS = "HAS";
+
+export const ORGANIZATION_GROUP_GROUP_RELATIONSHIP_TYPE =
+  "airwatch_group_airwatch_group";
+export const ORGANIZATION_GROUP_GROUP_RELATIONSHIP_CLASS = "HAS";

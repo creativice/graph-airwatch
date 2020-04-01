@@ -17,6 +17,7 @@ test("createOrganizationGroupEntities", () => {
       Country: "FI",
       WebLink: "None",
       CreatedOn: "3/19/2020 12:19:56 AM",
+      Children: [],
     },
   ];
 
@@ -36,6 +37,7 @@ test("createOrganizationGroupEntities", () => {
       {
         name: "default",
         rawData: {
+          Children: [],
           Country: "FI",
           CreatedOn: "3/19/2020 12:19:56 AM",
           GroupId: "group-1",
@@ -51,6 +53,7 @@ test("createOrganizationGroupEntities", () => {
     name: "Organization",
     locationGroupType: "type-1",
     groupId: 123,
+    children: [],
     country: "FI",
     displayName: "Organization",
     webLink:

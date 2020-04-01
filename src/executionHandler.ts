@@ -11,6 +11,7 @@ import {
   createOrganizationGroupEntities,
   createAdminEntities,
   createOrganizationGroupRelationships,
+  createOrganizationGroupGroupRelationships,
   createDeviceUserRelationships,
   createDeviceEntities,
   createUserEntities,
@@ -43,7 +44,10 @@ import {
   ACCOUNT_DEVICE_RELATIONSHIP_TYPE,
   ACCOUNT_DEVICE_RELATIONSHIP_CLASS,
 } from "./jupiterone/relationships/AccountDeviceRelationship";
-import { ORGANIZATION_GROUP_ADMIN_RELATIONSHIP_TYPE } from "./jupiterone/relationships/OrganizationGroupAdminRelationship";
+import {
+  ORGANIZATION_GROUP_ADMIN_RELATIONSHIP_TYPE,
+  ORGANIZATION_GROUP_GROUP_RELATIONSHIP_TYPE,
+} from "./jupiterone/relationships/OrganizationGroupAdminRelationship";
 import {
   UserEntity,
   DEVICE_USER_ENTITY_TYPE,
@@ -82,7 +86,10 @@ export default async function executionHandler(
       ACCOUNT_ORGANIZATION_GROUP_RELATIONSHIP_TYPE,
       ACCOUNT_DEVICE_RELATIONSHIP_TYPE,
     ]),
-    graph.findRelationshipsByType([ORGANIZATION_GROUP_ADMIN_RELATIONSHIP_TYPE]),
+    graph.findRelationshipsByType([
+      ORGANIZATION_GROUP_ADMIN_RELATIONSHIP_TYPE,
+      ORGANIZATION_GROUP_GROUP_RELATIONSHIP_TYPE,
+    ]),
     graph.findRelationshipsByType([USER_DEVICE_RELATIONSHIP_TYPE]),
   ]);
 
@@ -102,10 +109,10 @@ export default async function executionHandler(
     // Account HAS OrganizationGroups
     ...createAccountRelationships(
       accountEntity,
-      newOrganizationGroupEntities,
+      getRootOrganizationGroups(newOrganizationGroupEntities),
       ACCOUNT_ORGANIZATION_GROUP_RELATIONSHIP_CLASS,
       ACCOUNT_ORGANIZATION_GROUP_RELATIONSHIP_TYPE,
-      "has"
+      "has",
     ),
     // Account MANAGES Devices
     ...createAccountRelationships(
@@ -113,7 +120,7 @@ export default async function executionHandler(
       newDeviceEntities,
       ACCOUNT_DEVICE_RELATIONSHIP_CLASS,
       ACCOUNT_DEVICE_RELATIONSHIP_TYPE,
-      "manages"
+      "manages",
     ),
   ];
 
@@ -123,6 +130,10 @@ export default async function executionHandler(
       newOrganizationGroupEntities,
       newAdminEntities,
       ORGANIZATION_GROUP_ADMIN_RELATIONSHIP_TYPE,
+    ),
+    ...createOrganizationGroupGroupRelationships(
+      newOrganizationGroupEntities,
+      ORGANIZATION_GROUP_GROUP_RELATIONSHIP_TYPE,
     ),
   ];
 
@@ -200,4 +211,10 @@ function parseDeviceUsers(
   devices: AirWatchDevice[],
 ): UserEntity[] {
   return createUserEntities(provider.host, provider.parseDeviceUsers(devices));
+}
+
+function getRootOrganizationGroups(
+  groups: OrganizationGroupEntity[],
+): OrganizationGroupEntity[] {
+  return groups.filter(group => group.locationGroupType === "Customer");
 }

@@ -63,6 +63,7 @@ export interface AirWatchOrganizationGroup {
   Country: string;
   WebLink: string;
   CreatedOn: string;
+  Children: number[];
 }
 
 export interface Pageable {
